@@ -17,7 +17,8 @@ class GameEngine
     function getId()
     {
         foreach ($this->combattants as $id => $combattant) {
-            echo "ID: $id - Nom: {$combattant->name}\n";
+            echo "Combattant n°$id :\n";
+            echo "{$combattant->name}\n";
         }
     }
 
@@ -42,37 +43,25 @@ class GameEngine
 
         $combattants = [$this->combattants[$ids[$joueur1]], $this->combattants[$ids[$joueur2]]];
 
-        echo "Combat entre : " . $combattants[0]->name . " VS " . $combattants[1]->name . "\n";
+        echo "                                          \n";
+        echo "################## FIGHT ################\n";
+        echo "                                          \n";
+        echo "Combat entre : " . $combattants[0]->name . " VS " . $combattants[1]->name . " 🤼\n";
 
-        $this->degatInfliger($combattants[0], $combattants[1]);
+        $combattants[0]->attack($combattants[1]);
 
         return $combattants;
-    }
-
-    function degatInfliger($attaquant, $cible)
-    {
-        $degatsBase = $attaquant->attack();
-
-        $variation = rand(20, 45) / 100;
-        $degatsFinaux = (int)($degatsBase * $variation);
-
-        $cible->pv -= $degatsFinaux;
-
-        if ($cible->pv < 0) {
-            $cible->pv = 0;
-        }
-
-        echo "{$attaquant->name} inflige $degatsFinaux dégâts à {$cible->name}!\n";
-        echo "{$cible->name} a maintenant {$cible->pv} PV\n";
-
-        return $degatsFinaux;
     }
 
     function deadClean()
     {
         foreach ($this->combattants as $id => $combattant) {
             if ($combattant->pv <= 0) {
-                echo "Suppression de {$combattant->name} (mort)\n";
+                echo "                                          \n";
+                echo "===================\n";
+                echo "$combattant->name est mort ☠️\n";
+                echo "===================\n";
+                echo "                                          \n";
                 unset($this->combattants[$id]);
             }
         }
@@ -105,13 +94,17 @@ class GameEngine
 
         if (count($vivants) == 1) {
             $gagnant = $vivants[0];
-            echo "Le gagnant est {$gagnant->name} avec {$gagnant->pv} PV restants.\n";
+            echo "Le gagnant du tournoi est {$gagnant->name} 🏆\n";
         } else {
             echo "La partie est terminée en match nul.\n";
         }
     }
 
-    function startGame() {}
+    function startGame()
+    {
+        $this->getId();
+        $this->endGame();
+    }
 }
 
 $random = new GameEngine();
@@ -124,7 +117,4 @@ $random->addCombattant($orc);
 $random->addCombattant($humain);
 $random->addCombattant($elfe);
 
-$random->getId();
-$random->tourPlayer();
-$random->deadClean();
-$random->endGame();
+$random->startGame();

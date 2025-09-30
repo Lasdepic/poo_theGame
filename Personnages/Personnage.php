@@ -14,9 +14,22 @@ function __construct($name, $force, $pv, $endurance){
     $this->endurance = $endurance;
 }
 
-public function attack(){
-    echo "$this->name attack et enlève $this->force pv \n";
-    return $this->force;
+public function attack(Personnage $cible){
+    $degatsBase = $this->force;
+
+    $variation = rand(150, 300) / 100;
+    $degatsFinaux = (int)($degatsBase * $variation);
+
+    $cible->pv -= $degatsFinaux;
+
+    if ($cible->pv < 0) {
+        $cible->pv = 0;
+    }
+
+    echo "{$this->name} inflige $degatsFinaux dégâts à {$cible->name}!\n";
+    echo "{$cible->name} a maintenant {$cible->pv} PV\n";
+
+    return $degatsFinaux;
 }
 }
 
