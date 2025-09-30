@@ -17,8 +17,14 @@ class GameEngine
     function getId()
     {
         foreach ($this->combattants as $id => $combattant) {
-            echo "Combattant n°$id :\n";
-            echo "{$combattant->name}\n";
+
+            $blue = "\033[34m";
+            $yellow = "\033[33m";
+            $reset = "\033[0m";
+
+            echo "                                          \n";
+            echo "Combattant {$yellow}n°$id :{$reset}\n";
+            echo "{$blue}{$combattant->name}{$reset}\n";
         }
     }
 
@@ -43,10 +49,14 @@ class GameEngine
 
         $combattants = [$this->combattants[$ids[$joueur1]], $this->combattants[$ids[$joueur2]]];
 
+        $blue = "\033[34m";
+        $yellow = "\033[33m";
+        $reset = "\033[0m";
+
         echo "                                          \n";
-        echo "################## FIGHT ################\n";
+        echo "{$yellow}################## FIGHT ################{$reset}\n";
         echo "                                          \n";
-        echo "Combat entre : " . $combattants[0]->name . " VS " . $combattants[1]->name . " 🤼\n";
+        echo "Combat entre : {$blue}{$combattants[0]->name}{$reset} {$yellow}VS{$reset} {$blue}{$combattants[1]->name}{$reset} 🤼\n";
 
         $combattants[0]->attack($combattants[1]);
 
@@ -56,10 +66,19 @@ class GameEngine
     function deadClean()
     {
         foreach ($this->combattants as $id => $combattant) {
-            if ($combattant->pv <= 0) {
+            if ($combattant->pv <= 0 || $combattant->endurance <= 0) {
+
+                $blue = "\033[34m";
+                $red = "\033[31m";
+                $reset = "\033[0m";
+
                 echo "                                          \n";
                 echo "===================\n";
-                echo "$combattant->name est mort ☠️\n";
+                if ($combattant->pv <= 0) {
+                    echo "{$blue}$combattant->name{$reset} {$red}est mort{$reset} ☠️\n";
+                } else {
+                    echo "{$blue}$combattant->name {$reset} {$red}est à court d'endurance{$reset} 😵\n";
+                }
                 echo "===================\n";
                 echo "                                          \n";
                 unset($this->combattants[$id]);
@@ -70,14 +89,14 @@ class GameEngine
     function endGame()
     {
         while (true) {
-            $vivants = [];
+            $domeDuTonnere = [];
             foreach ($this->combattants as $c) {
-                if ($c->pv > 0) {
-                    $vivants[] = $c;
+                if ($c->pv > 0 && $c->endurance > 0) {
+                    $domeDuTonnere[] = $c;
                 }
             }
 
-            if (count($vivants) <= 1) {
+            if (count($domeDuTonnere) <= 1) {
                 break;
             }
 
@@ -85,16 +104,19 @@ class GameEngine
             $this->deadClean();
         }
 
-        $vivants = [];
+        $domeDuTonnere = [];
         foreach ($this->combattants as $c) {
-            if ($c->pv > 0) {
-                $vivants[] = $c;
+            if ($c->pv > 0 && $c->endurance > 0) {
+                $domeDuTonnere[] = $c;
             }
         }
 
-        if (count($vivants) == 1) {
-            $gagnant = $vivants[0];
-            echo "Le gagnant du tournoi est {$gagnant->name} 🏆\n";
+        if (count($domeDuTonnere) == 1) {
+
+            $green = "\033[32m";
+            $reset = "\033[0m";
+            $gagnant = $domeDuTonnere[0];
+            echo "Le gagnant du tournoi est {$green}{$gagnant->name}{$reset} 🏆\n";
         } else {
             echo "La partie est terminée en match nul.\n";
         }
