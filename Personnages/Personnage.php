@@ -44,33 +44,10 @@ abstract class Personnage
         echo "                                    \n";
         echo "{$blue}{$this->name}{$reset} inflige {$red}$degatsFinaux dégâts{$reset} à {$blue}{$cible->name}{$reset}!\n";
         echo "{$blue}{$this->name}{$reset} perd {$red}$perteEndurance points d'endurance !{$reset}\n";
-        echo "Il reste {$green}{$this->endurance} endurance{$reset} à {$blue}{$this->name}{$reset}\n";
+        echo "Il reste {$green}{$this->endurance} points d'endurance{$reset} à {$blue}{$this->name}{$reset}\n";
         echo "{$blue}{$cible->name}{$reset} a maintenant {$red}{$cible->pv} PV{$reset}\n";
 
         return $degatsFinaux;
     }
 }
-
-class Orc extends Personnage
-{
-    function __construct($name, $force, $pv, $endurance)
-    {
-        parent::__construct($name, $force, $pv, $endurance);
-    }
-}
-
-class Humain extends Personnage
-{
-    function __construct($name, $force, $pv, $endurance)
-    {
-        parent::__construct($name, $force, $pv, $endurance);
-    }
-}
-
-class Elfe extends Personnage
-{
-    function __construct($name, $force, $pv, $endurance)
-    {
-        parent::__construct($name, $force, $pv, $endurance);
-    }
-}
+?>

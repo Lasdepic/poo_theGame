@@ -1,6 +1,9 @@
 <?php
 
-require_once "./Personnages/Personnage.php";
+require_once __DIR__ . "/Personnages/Personnage.php";
+require_once __DIR__ . "/Personnages/Orc.php";
+require_once __DIR__ . "/Personnages/Humain.php";
+require_once __DIR__ . "/Personnages/Elfe.php";
 
 class GameEngine
 {
